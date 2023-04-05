@@ -1,6 +1,11 @@
+//defining body variable to inject html into
 let body_html = document.querySelector(`body`);
-
+//success function for db request
 function successFunction(response) {
+    //removes fetching meal data
+    let remove_id = document.getElementById(`remove`);
+    remove_id.outerHTML = ``;
+    //using a for loop to add in all the recipe data
     for (i = 0; i < response.data.meals.length; i++) {
         body_html.insertAdjacentHTML(`afterbegin`, `<h1>${response.data.meals[0].strMeal}</h1>
         <img src="${response.data.meals[0].strMealThumb}" alt="random meal thumbnail" width="350px">
@@ -32,12 +37,18 @@ function successFunction(response) {
         `)
     };
 };
+//defining failure for db request
 function failureFunction(error) {
-    body_html.insertAdjacentHTML(`afterbegin`, `<h1>ERROR</h1>`)
+    //inserts error html
+    body_html.insertAdjacentHTML(`afterbegin`, `<h1>ERROR</h1>`);
 };
-
+//function that calls to db for random meal
 function fetchfood(dettails) {
+    //inserts html with id to easily remove
+    body_html.insertAdjacentHTML(`afterbegin`, `<h1 id="remove">FETCHING MEAL DATA</h1>`);
+    //console logs getting meal data
     console.log(`fetching meal data`);
+    //request to db with successFunction and failureFunction
     axios.request({
         url: `https://www.themealdb.com/api/json/v1/1/random.php`
     }).then(successFunction).catch(failureFunction);
